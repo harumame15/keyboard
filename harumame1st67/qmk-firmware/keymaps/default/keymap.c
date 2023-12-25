@@ -168,10 +168,6 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
  *
  */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  // コンソールが有効化されている場合、マトリックス上の位置とキー押下状態を出力します
-#ifdef CONSOLE_ENABLE
-    uprintf("KL: kc: %u, col: %u, row: %u, pressed: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed);
-#endif 
     mod_state = get_mods();
 
     switch (keycode) {
@@ -209,6 +205,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           ctrl_pressed = false;
         }
         break;
+    // Run Explorer
     case EXPL:
         if (record->event.pressed){
             register_code(KC_RWIN);
@@ -256,19 +253,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true;
 };
-
-/*
-void keyboard_post_init_user(void) {
-  debug_enable=true;
-  debug_matrix=true;
-  debug_keyboard=true;
-  debug_mouse=true;
-};
-*/
-/*
-void matrix_init_kb(void) {
-  debug_enable = true;
-  debug_matrix = true;
-  debug_mouse  = true;
-};
-*/
