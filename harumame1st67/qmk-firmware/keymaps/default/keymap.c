@@ -83,6 +83,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //ctrl,shift position
 static bool ctrl_pressed = false;
 static bool shift_pressed = false;
+static int speed = 5;
+static int high = 5;
+static int speed2 = 5;
 uint8_t mod_state;
 
 
@@ -92,11 +95,11 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     //Layer position
     uint8_t layer = biton32(layer_state);
     int i = 1;
-    int speed = 5;  //mouse speed
-    int high = 1;   //ctrl speed up
+//    int speed = 5;  //mouse speed
+//    int high = 1;   //ctrl speed up
     
     if (index == 0) {
-        if (layer == 2) {
+        if (layer == 0) {
             if (clockwise) {
                 tap_code16(KC_KB_VOLUME_DOWN);
             } else {
@@ -105,55 +108,76 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
             return true;
         } else if (layer == 1) {
             if (clockwise) {
-                tap_code16(KC_KB_VOLUME_DOWN);
+                if (speed < 20){
+                    speed++;
+                }
             } else {
-                tap_code16(KC_KB_VOLUME_UP);
+                if (speed > 1){
+                    speed--;
+                }
             }
-            return true;
-        } else if (layer == 0) {  //mouse cursour move
+            return false;
+        } else if (layer == 2) {  //mouse cursour move
+            if (clockwise) {
+                if (high < 10){
+                    high++;
+                }
+            } else {
+                if (high > 1){
+                    high--;
+                }
+            }
+            return false;
+        }
+
+    } else if (index == 1) {
+        if (layer == 0) {  //mouse cursour move
             if (ctrl_pressed){
-                high = 5;
+                speed2 = speed * high;
+            }else{
+                speed2 = speed;
             }
+            
             if (clockwise) {
                 if (shift_pressed) {
-                    for (i = 1 ;i <= speed * high ; i++){
+                    for (i = 1 ;i <= speed2 ; i++){
                         tap_code16(KC_MS_D);
                     }
                 } else {
-                    for (i = 1 ;i <= speed * high ; i++){
+                    for (i = 1 ;i <= speed2 ; i++){
                         tap_code16(KC_MS_R);
                     }
                 }
                 return false;
             } else {
                 if (shift_pressed) {
-                    for (i = 1 ;i <= speed * high ; i++){
+                    for (i = 1 ;i <= speed2 ; i++){
                         tap_code16(KC_MS_U);
                     }
                 } else {
-                    for (i = 1 ;i <= speed * high ; i++){
+                    for (i = 1 ;i <= speed2 ; i++){
                         tap_code16(KC_MS_L);
                     }
                 }
                 return false;
             }
 
-        }
-
-    } else if (index == 1) {
+        } else if (layer == 1){
         
-        if (clockwise) {
-            if (shift_pressed) {
-                tap_code16(KC_MS_WH_RIGHT);
+            if (clockwise) {
+                if (shift_pressed) {
+                    tap_code16(KC_MS_WH_RIGHT);
+                } else {
+                    tap_code16(KC_MS_WH_DOWN);
+                }
             } else {
-                tap_code16(KC_MS_WH_DOWN);
+                if (shift_pressed) {
+                    tap_code16(KC_MS_WH_LEFT);
+            } else {
+                    tap_code16(KC_MS_WH_UP);
+                }
             }
-        } else {
-            if (shift_pressed) {
-                 tap_code16(KC_MS_WH_LEFT);
-           } else {
-                tap_code16(KC_MS_WH_UP);
-            }
+            return false;
         }
         return false;
     }
