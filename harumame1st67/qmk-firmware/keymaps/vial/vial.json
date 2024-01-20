@@ -1,5 +1,51 @@
 {
     "name":"harumame1st67",
+    "customKeycodes": [
+    {"name": "MM_UP",
+     "title": "Macro Mouse up",
+     "shortName": "MMUP"
+    },
+    {"name": "MM_DN",
+     "title": "Macro Mouse down",
+     "shortName": "MMDN"
+    },
+    {"name": "MW_UP",
+     "title": "Macro Mouse wheel up",
+     "shortName": "MWUP"
+    },
+    {"name": "MW_DN",
+     "title": "Macro Mouse wheel down",
+     "shortName": "MWDN"
+    },
+    {"name": "MS_UP",
+     "title": "Macro Mouse Speed up",
+     "shortName": "MSUP"
+    },
+    {"name": "MS_DN",
+     "title": "Macro Mouse Speed down",
+     "shortName": "MSDN"
+    },
+    {"name": "MH_UP",
+     "title": "Macro Mouse high up",
+     "shortName": "MHUP"
+    },
+    {"name": "MH_DN",
+     "title": "Macro Mouse high down",
+     "shortName": "MHDN"
+    },
+    {"name": "EXPL",
+     "title": " Run Explorer",
+     "shortName": "EXPL_"
+    },
+    {"name": "APSTP",
+     "title": "Application stop",
+     "shortName": "APSTP_"
+    },
+    {"name": "TM_MUTE",
+     "title": "Teams mic mute",
+     "shortName": "TMMUTE"
+    }
+    ],
     "lighting": "none",
     "matrix": {
         "rows": 5,
@@ -10,7 +56,7 @@
           "Split Backspace",
           "Split Left Shift"
         ],
-        "keymap": [
+        "keymap":[
   [
     "0,0",
     "0,1",
@@ -29,14 +75,10 @@
     "0,11",
     "0,12",
     {
-      "x": 0.25
+      "x": 1.5
     },
-    "0,13",
-    {
-      "x": 0.25
-    },
-    "1,0\n\n\n\n\n\n\n\n\ne",
-    "1,1\n\n\n\n\n\n\n\n\ne"
+    "0,0\n\n\n\n\n\n\n\n\ne",
+    "0,1\n\n\n\n\n\n\n\n\ne"
   ],
   [
     "1,0",
@@ -58,7 +100,11 @@
     {
       "x": 0.25
     },
-    "1,13"
+    "1,13",
+    {
+      "x": 0.75
+    },
+    "0,13"
   ],
   [
     "2,0",
@@ -87,8 +133,8 @@
       "y": -0.75,
       "x": 6.5
     },
-    "0,0\n\n\n\n\n\n\n\n\ne",
-    "0,1\n\n\n\n\n\n\n\n\ne"
+    "1,0\n\n\n\n\n\n\n\n\ne",
+    "1,1\n\n\n\n\n\n\n\n\ne"
   ],
   [
     {

@@ -7,20 +7,28 @@
 
 //custom keymap
 enum custom_keycodes {
-    QWERTY = SAFE_RANGE,
+//enum blender_keycode {
+    MM_UP = QK_KB_0,
+    MM_DN,
+    MW_UP,
+    MW_DN,
+    MS_UP,
+    MS_DN,
+    MH_UP,
+    MH_DN,
     EXPL,
     APSTP,
     TM_MUTE,
-    KANA
+    KANA,
 };
 
 
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
-    [0] =   { ENCODER_CCW_CW(KC_MS_WH_UP, KC_MS_WH_DOWN), ENCODER_CCW_CW(KC_VOLD, KC_VOLU)  },
-    [1] =   { ENCODER_CCW_CW(RGB_HUD, RGB_HUI),           ENCODER_CCW_CW(RGB_SAD, RGB_SAI)  },
-    [2] =   { ENCODER_CCW_CW(RGB_VAD, RGB_VAI),           ENCODER_CCW_CW(RGB_SPD, RGB_SPI)  },
-    //                  Encoder 1                                     Encoder 2
+    [0] =   { ENCODER_CCW_CW(KC_VOLD, KC_VOLU),           ENCODER_CCW_CW(MM_UP, MM_DN)  },
+    [1] =   { ENCODER_CCW_CW(MS_UP, MS_DN),           ENCODER_CCW_CW(MW_UP, MW_DN)  },
+    [2] =   { ENCODER_CCW_CW(MH_UP, MH_DN),      ENCODER_CCW_CW(KC_LEFT, KC_RIGHT)  }
+    //                  Encoder 1                              Encoder 2
 };
 #endif
 
@@ -101,6 +109,8 @@ uint8_t mod_state;
 
 
 //rotally encorder
+
+/*
 bool encoder_update_user(uint8_t index, bool clockwise) {
     //Layer position
     uint8_t layer = biton32(layer_state);
@@ -183,7 +193,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
             } else {
                 if (shift_pressed) {
                     tap_code16(KC_MS_WH_LEFT);
-            } else {
+                } else {
                     tap_code16(KC_MS_WH_UP);
                 }
             }
@@ -193,7 +203,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     }
     return false;
 };
-
+*/
 
 
 
@@ -202,7 +212,14 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
  *
  */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    int i = 1;
+
     mod_state = get_mods();
+    if (ctrl_pressed){
+        speed2 = speed * high;
+    }else{
+        speed2 = speed;
+    }
 
     switch (keycode) {
       case KANA:
@@ -240,7 +257,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
     // Run Explorer
-    case EXPL:
+      case EXPL:
         if (record->event.pressed){
             register_code(KC_RWIN);
             register_code(KC_E);
@@ -248,8 +265,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             unregister_code(KC_E);
         }
         break;
-        
-    case APSTP:
+            
+      case APSTP:
         if (record->event.pressed){
             register_code(KC_LALT);
             register_code(KC_F4);
@@ -258,7 +275,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
     // TM_MUTE
-    case TM_MUTE:
+      case TM_MUTE:
         if (record->event.pressed){
             register_code(KC_LCTL);
             register_code(KC_LSFT);
@@ -267,9 +284,74 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             unregister_code(KC_LSFT);
             unregister_code(KC_M);
         }
+        return false;
+        break;
+      case MM_UP:
+        if (shift_pressed) {
+            for (i = 1 ;i <= speed2 ; i++){
+                tap_code16(KC_MS_D);
+            }
+        } else {
+            for (i = 1 ;i <= speed2 ; i++){
+                tap_code16(KC_MS_R);
+            }
+        }
+        return false;
+        break;
+      case MM_DN:
+        if (shift_pressed) {
+            for (i = 1 ;i <= speed2 ; i++){
+                tap_code16(KC_MS_U);
+            }
+        } else {
+            for (i = 1 ;i <= speed2 ; i++){
+                tap_code16(KC_MS_L);
+            }
+        }
+        return false;
+        break;
+      case MW_UP:
+        if (shift_pressed) {
+            tap_code16(KC_MS_WH_RIGHT);
+        } else {
+            tap_code16(KC_MS_WH_DOWN);
+        }
+        return false;
+        break;
+      case MW_DN:
+        if (shift_pressed) {
+            tap_code16(KC_MS_WH_LEFT);
+        } else {
+            tap_code16(KC_MS_WH_UP);
+        }
+        return false;
+        break;
+      case MS_UP:
+        if (speed < 20){
+            speed++;
+        }
+        return false;
+        break;
+      case MS_DN:
+        if (speed > 1){
+            speed--;
+        }
+        return false;
+        break;
+      case MH_UP:
+        if (high < 20){
+            high++;
+        }
+        return false;
+        break;
+      case MH_DN:
+        if (high > 1){
+            high--;
+        }
+        return false;
         break;
 
-    case KC_BSPC:
+      case KC_BSPC:
         // Initialize a boolean variable that keeps track
         // of the delete key status: registered or not?
         static bool delkey_registered;
